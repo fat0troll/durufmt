@@ -1,4 +1,4 @@
-package durafmt
+package durafmt_ru
 
 import (
 	"fmt"
@@ -11,8 +11,9 @@ func ExampleParseString() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(duration) // 2 weeks 18 hours 22 minutes 3 seconds
-	// duration.String() // String representation. "2 weeks 18 hours 22 minutes 3 seconds"
+
+	fmt.Println(duration) // 2 недели 18 часов 22 минуты 3 секунды
+	// duration.String() // "2 недели 18 часов 22 минуты 3 секунды"
 }
 
 func ExampleDurafmt_LimitFirstN() {
@@ -20,9 +21,11 @@ func ExampleDurafmt_LimitFirstN() {
 	if err != nil {
 		fmt.Println(err)
 	}
+
 	duration = duration.LimitFirstN(2)
-	fmt.Println(duration) // 2 weeks 18 hours
-	// duration.String() // String representation. "2 weeks 18 hours"
+
+	fmt.Println(duration) // 2 недели 18 часов
+	// duration.String() // "2 недели 18 часов"
 }
 
 func ExampleDurafmt_LimitToUnit() {
@@ -30,9 +33,11 @@ func ExampleDurafmt_LimitToUnit() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	duration = duration.LimitToUnit("days")
-	fmt.Println(duration) // 14 days 18 hours 22 minutes 3 seconds
-	// duration.String() // String representation. "14 days 18 hours 22 minutes 3 seconds"
+
+	duration = duration.LimitToUnit(Days)
+
+	fmt.Println(duration) // 14 дней 18 часов 22 минуты 3 секунды
+	// duration.String() // "14 дней 18 часов 22 минуты 3 секунды"
 }
 
 func ExampleParseString_sequence() {
@@ -42,29 +47,33 @@ func ExampleParseString_sequence() {
 		if err != nil {
 			fmt.Println(err)
 		}
-		fmt.Println(duration) // 2 hours, 4 hours, ...
+
+		fmt.Println(duration) // 2 часа, 4 часа, 6 часов...
 	}
 }
 
-// Version of durafmt.ParseString() that only returns the first part of the duration string.
+// Версия durafmt_ru.ParseString(), возвращающая только первую часть строки с продолжительностью времени.
 func ExampleParseStringShort() {
 	duration, err := ParseStringShort("354h22m3.24s")
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(duration) // 2 weeks 18 hours 22 minutes 3 seconds
-	// duration.String() // String representation. "2 weeks 18 hours 22 minutes 3 seconds"
+
+	fmt.Println(duration) // 2 недели
+	// duration.String() // "2 недели"
 }
 
 func ExampleParse() {
 	timeduration := (354 * time.Hour) + (22 * time.Minute) + (3 * time.Second)
 	duration := Parse(timeduration).String()
-	fmt.Println(duration) // 2 weeks 18 hours 22 minutes 3 seconds
+
+	fmt.Println(duration) // 2 недели 18 часов 22 минуты 3 секунды
 }
 
-// Version of durafmt.Parse() that only returns the first part of the duration string.
+// Версия durafmt_ru.Parse(), возвращающая только первую часть строки с продолжительностью времени.
 func ExampleParseShort() {
 	timeduration := (354 * time.Hour) + (22 * time.Minute) + (3 * time.Second)
 	duration := ParseShort(timeduration).String()
-	fmt.Println(duration) // 2 weeks
+
+	fmt.Println(duration) // 2 недели
 }
