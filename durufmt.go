@@ -169,8 +169,8 @@ func (d *Durafmt) String() string {
 	var days int64
 	var weeks int64
 	var years int64
-	var shouldConvert = false
 
+	shouldConvert := false
 	remainingSecondsToConvert := int64(d.duration / time.Microsecond)
 
 	// Convert duration.
@@ -233,6 +233,24 @@ func (d *Durafmt) String() string {
 		Years:        years,
 	}
 
+	duration += d.buildDuration(durationMap)
+
+	// Если запрошена краткая версия и в строке более limitN*2 пробелов, возвращаем
+	// первые limitN*2 подстроки.
+	if d.limitN > 0 {
+		parts := strings.Split(duration, " ")
+
+		if len(parts) > d.limitN*2 {
+			duration = strings.Join(parts[:d.limitN*2], " ")
+		}
+	}
+
+	return duration
+}
+
+func (d *Durafmt) buildDuration(durationMap map[string]int64) string {
+	duration := ""
+
 	// Construct duration string.
 	for idx := range units {
 		uKey := units[idx]
@@ -242,6 +260,7 @@ func (d *Durafmt) String() string {
 
 		if d.duration.String() == "0" || d.duration.String() == "0s" {
 			pattern := fmt.Sprintf("^-?0%s$", unitsShort[idx])
+
 			isMatch, err := regexp.MatchString(pattern, d.input)
 			if err != nil {
 				return ""
@@ -274,22 +293,9 @@ func (d *Durafmt) String() string {
 
 		default:
 			duration += strval + " " + u[Many] + " "
-
 		}
 	}
 
 	// Удаляем лишние пробелы.
-	duration = strings.TrimSpace(duration)
-
-	// Если запрошена краткая версия и в строке более limitN*2 пробелов, возвращаем
-	// первые limitN*2 подстроки.
-	if d.limitN > 0 {
-		parts := strings.Split(duration, " ")
-
-		if len(parts) > d.limitN*2 {
-			duration = strings.Join(parts[:d.limitN*2], " ")
-		}
-	}
-
-	return duration
+	return strings.TrimSpace(duration)
 }

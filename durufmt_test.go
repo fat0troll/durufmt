@@ -286,6 +286,7 @@ func TestParseString(t *testing.T) {
 		if err != nil {
 			t.Errorf("%q", err)
 		}
+
 		result := d.String()
 		if result != table.expected {
 			t.Errorf("d.String() = %q. получено %q, ожидалось %q",
@@ -378,6 +379,7 @@ func TestParseStringShort(t *testing.T) {
 		if err != nil {
 			t.Errorf("%q", err)
 		}
+
 		result := d.String()
 		if result != table.expected {
 			t.Errorf("d.String() = %q. получено %q, ожидалось %q",

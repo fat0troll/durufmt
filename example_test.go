@@ -43,6 +43,7 @@ func ExampleDurafmt_LimitToUnit() {
 func ExampleParseString_sequence() {
 	for hours := 1.0; hours < 12.0; hours++ {
 		hour := fmt.Sprintf("%fh", math.Pow(2, hours))
+
 		duration, err := ParseString(hour)
 		if err != nil {
 			fmt.Println(err)

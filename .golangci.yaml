@@ -1,0 +1,24 @@
+run:
+  deadline: 5m
+linters:
+  enable-all: true
+  disable:
+    - funlen
+    - gochecknoglobals
+    - gocognit
+    - gomnd
+    - goerr113
+linters-settings:
+  lll:
+    line-length: 120
+
+issues:
+  exclude-rules:
+    - path: _test\.go
+      linters:
+        - dupl
+        - testpackage
+        - errcheck
+    - linters:
+        - wsl
+      text: "declarations should never be cuddled"
