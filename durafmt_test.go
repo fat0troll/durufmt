@@ -1,4 +1,4 @@
-package durafmt_ru
+package durufmt
 
 import (
 	"fmt"

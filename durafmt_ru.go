@@ -2,7 +2,7 @@
 // на русском языке.
 // В качестве основы взята подобная библиотека durafmt (https://github.com/hako/durafmt/),
 // существующая только для английского языка.
-package durafmt_ru
+package durufmt
 
 import (
 	"errors"

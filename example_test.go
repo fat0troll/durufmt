@@ -1,4 +1,4 @@
-package durafmt_ru
+package durufmt
 
 import (
 	"fmt"
@@ -52,7 +52,7 @@ func ExampleParseString_sequence() {
 	}
 }
 
-// Версия durafmt_ru.ParseString(), возвращающая только первую часть строки с продолжительностью времени.
+// Версия durufmt.ParseString(), возвращающая только первую часть строки с продолжительностью времени.
 func ExampleParseStringShort() {
 	duration, err := ParseStringShort("354h22m3.24s")
 	if err != nil {
@@ -70,7 +70,7 @@ func ExampleParse() {
 	fmt.Println(duration) // 2 недели 18 часов 22 минуты 3 секунды
 }
 
-// Версия durafmt_ru.Parse(), возвращающая только первую часть строки с продолжительностью времени.
+// Версия durufmt.Parse(), возвращающая только первую часть строки с продолжительностью времени.
 func ExampleParseShort() {
 	timeduration := (354 * time.Hour) + (22 * time.Minute) + (3 * time.Second)
 	duration := ParseShort(timeduration).String()

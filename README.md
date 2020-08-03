@@ -1,21 +1,21 @@
-# durafmt_ru - это durafmt, но на русском
+# durufmt - это durafmt, но на русском
 
 ## Intro in English
 
-[durafmt](https://github.com/hako/durafmt) is a tiny Go library that formats `time.Duration` strings (and types) into a human readable format. durafmt_ru is the same, but for Russian language.
+[durafmt](https://github.com/hako/durafmt) is a tiny Go library that formats `time.Duration` strings (and types) into a human readable format. durufmt is the same, but for Russian language.
 
-All documentation and contributions are in Russian due to library specific use case. If you interested in English language human readable durations, consult the original library documentation. If you interested in any other language (or want to merge durafmt, durafmt_ru and maybe more into one fully internationalized library), feedback is welcome.
+All documentation and contributions are in Russian due to library specific use case. If you interested in English language human readable durations, consult the original library documentation. If you interested in any other language (or want to merge durafmt, durufmt and maybe more into one fully internationalized library), feedback is welcome.
 
 ## Что это за библиотека?
 
-[durafmt](https://github.com/hako/durafmt) - это маленькая Go-библиотека, которая позволяет отформатировать строки `time.Duration` (и типы тоже) в человекочитаемый формат на английском языке. durafmt_ru делает то же самое, но на русском языке.
+[durafmt](https://github.com/hako/durafmt) - это маленькая Go-библиотека, которая позволяет отформатировать строки `time.Duration` (и типы тоже) в человекочитаемый формат на английском языке. durufmt делает то же самое, но на русском языке.
 
 Вся документация (в виде этого README), комментарии в коде и тесты переведены на русский язык. Заинтересованные в человекочитаемых временных интервалах на английском языке могут использовать исходную библиотеку durafmt. Заинтересованные в других языках, помимо английского и русского (а так же, возможно, в создании более универсальной библиотеки, которая будет поддерживать нормальную локализацию) могут отправлять свой фидбэк мне или автору оригинальной библиотеки.
 
 ## Установка
 
 ```
-go get github.com/fat0troll/durafmt_ru
+go get github.com/fat0troll/durufmt
 ```
 
 ## Зачем нужна эта библиотека?
@@ -32,13 +32,13 @@ go get github.com/fat0troll/durafmt_ru
 354h22m3.24s // :S
 ```
 
-Но есть ещё одна проблема, касающаяся конкретно durafmt_ru - числительные в русском языке работают несколько сложнее, чем в английском. Недостаточно просто в конце поставить одну буковку, чтобы всё заработало - нужно учитывать три склонения (а ещё помнить, что одиннадцать, двенадцать и тринадцать - волшебные числительные-исключения). Из-за невнимательности и/или нежелания заморачиваться иногда мы видим в локализованных на русский язык интерфейсах что-нибудь типа "осталось 4 минут(-ы)", или же ещё хуже - "осталось 1 минуты". durafmt_ru позволяет отформатировать временной интервал вызовом одной функции, не задумываясь о сложности и красоте русского языка.
+Но есть ещё одна проблема, касающаяся конкретно durufmt - числительные в русском языке работают несколько сложнее, чем в английском. Недостаточно просто в конце поставить одну буковку, чтобы всё заработало - нужно учитывать три склонения (а ещё помнить, что одиннадцать, двенадцать и тринадцать - волшебные числительные-исключения). Из-за невнимательности и/или нежелания заморачиваться иногда мы видим в локализованных на русский язык интерфейсах что-нибудь типа "осталось 4 минут(-ы)", или же ещё хуже - "осталось 1 минуты". durufmt позволяет отформатировать временной интервал вызовом одной функции, не задумываясь о сложности и красоте русского языка.
 
 ## Использование
 
 Библиотека старается быть drop-in replacement для оригинальной durafmt, но никто не гарантирует, что так будет всегда.
 
-### durafmt_ru.ParseString()
+### durufmt.ParseString()
 
 ```go
 package main
@@ -46,11 +46,11 @@ package main
 import (
 	"fmt"
 	
-	"github.com/fat0troll/durafmt_ru"
+	"github.com/fat0troll/durufmt"
 )
 
 func main() {
-	duration, err := durafmt_ru.ParseString("354h22m3.24s")
+	duration, err := durufmt.ParseString("354h22m3.24s")
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -60,9 +60,9 @@ func main() {
 }
 ```
 
-### durafmt_ru.ParseStringShort()
+### durufmt.ParseStringShort()
 
-Версия функции `durafmt_ru.ParseString()`, возвращающая только первый (наибольший) элемент временной продолжительности.
+Версия функции `durufmt.ParseString()`, возвращающая только первый (наибольший) элемент временной продолжительности.
 
 ```go
 package main
@@ -70,11 +70,11 @@ package main
 import (
 	"fmt"
 	
-	"github.com/fat0troll/durafmt_ru"
+	"github.com/fat0troll/durufmt"
 )
 
 func main() {
-	duration, err := durafmt_ru.ParseStringShort("354h22m3.24s")
+	duration, err := durufmt.ParseStringShort("354h22m3.24s")
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -84,7 +84,7 @@ func main() {
 }
 ```
 
-### durafmt_ru.Parse()
+### durufmt.Parse()
 
 ```go
 package main
@@ -93,7 +93,7 @@ import (
 	"fmt"
 	"time"
 	
-	"github.com/fat0troll/durafmt_ru"
+	"github.com/fat0troll/durufmt"
 )
 
 func main() {
@@ -106,7 +106,7 @@ func main() {
 
 #### LimitFirstN()
 
-Функция похожа на `durafmt_ru.ParseStringShort()`, но позволяет оставить первые N частей строки вместо одной.
+Функция похожа на `durufmt.ParseStringShort()`, но позволяет оставить первые N частей строки вместо одной.
 
 ```go
 package main
@@ -115,7 +115,7 @@ import (
 	"fmt"
 	"time"
 	
-	"github.com/fat0troll/durafmt_ru"
+	"github.com/fat0troll/durufmt"
 )
 
 func main() {

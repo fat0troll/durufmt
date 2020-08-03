@@ -1,3 +1,3 @@
-module github.com/fat0troll/durafmt_ru
+module github.com/fat0troll/durufmt
 
 go 1.14
