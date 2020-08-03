@@ -1,5 +1,7 @@
 # durufmt - это durafmt, но на русском
 
+[![Build Status](https://github.drone.hodakov.me/api/badges/fat0troll/durufmt/status.svg)](https://github.drone.hodakov.me/fat0troll/durufmt)
+
 ## Intro in English
 
 [durafmt](https://github.com/hako/durafmt) is a tiny Go library that formats `time.Duration` strings (and types) into a human readable format. durufmt is the same, but for Russian language.
