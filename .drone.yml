@@ -3,7 +3,11 @@ type: docker
 name: build
 
 steps:
-- name: test
+- name: test-1.13
+  image: golang:1.13
+  commands:
+  - go test -test.v -cover .
+- name: test-1.14
   image: golang:1.14
   commands:
   - go test -test.v -cover .
