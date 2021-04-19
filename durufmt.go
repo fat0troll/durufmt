@@ -31,9 +31,9 @@ const (
 )
 
 var (
-	units      = []string{Years, Weeks, Days, Hours, Minutes, Seconds, Milliseconds, Microseconds}
-	unitsShort = []string{"y", "w", "d", "h", "m", "s", "ms", "µs"}
-	unitNames  = map[string]map[string]string{
+	units               = []string{Years, Weeks, Days, Hours, Minutes, Seconds, Milliseconds, Microseconds}
+	unitsShort          = []string{"y", "w", "d", "h", "m", "s", "ms", "µs"}
+	nominativeUnitNames = UnitCase{
 		Years: {
 			Singular: "год",
 			Some:     "года",
@@ -75,14 +75,70 @@ var (
 			Many:     "микросекунд",
 		},
 	}
+
+	accusativeUnitNames = UnitCase{
+		Years: {
+			Singular: "год",
+			Some:     "года",
+			Many:     "лет",
+		},
+		Weeks: {
+			Singular: "неделю",
+			Some:     "недели",
+			Many:     "недель",
+		},
+		Days: {
+			Singular: "день",
+			Some:     "дня",
+			Many:     "дней",
+		},
+		Hours: {
+			Singular: "час",
+			Some:     "часа",
+			Many:     "часов",
+		},
+		Minutes: {
+			Singular: "минуту",
+			Some:     "минуты",
+			Many:     "минут",
+		},
+		Seconds: {
+			Singular: "секунду",
+			Some:     "секунды",
+			Many:     "секунд",
+		},
+		Milliseconds: {
+			Singular: "миллисекунду",
+			Some:     "миллисекунды",
+			Many:     "миллисекунд",
+		},
+		Microseconds: {
+			Singular: "микросекунду",
+			Some:     "микросекунды",
+			Many:     "микросекунд",
+		},
+	}
 )
 
-// Durafmt хранит в себе спарсированный интервал времени и оригинальный ввод пользователя.
-type Durafmt struct {
-	duration  time.Duration
-	input     string // Справочная информация.
-	limitN    int    // В случае ненулевого значения ограничивает количество выдаваемых элементов в результате.
-	limitUnit string // Непустое значение лимитирует максимальную единицу времени для выдачи.
+type (
+	// Тип данных для хранения имен периодов времени
+	UnitCase map[string]map[string]string
+
+	// Durafmt хранит в себе спарсированный интервал времени и оригинальный ввод пользователя.
+	Durafmt struct {
+		duration  time.Duration
+		input     string   // Справочная информация.
+		limitN    int      // В случае ненулевого значения ограничивает количество выдаваемых элементов в результате.
+		limitUnit string   // Непустое значение лимитирует максимальную единицу времени для выдачи.
+		unitCase  UnitCase // Падеж результата
+	}
+)
+
+// Позволяет поменять падеж результата на винительный
+func (d *Durafmt) SetAccusativeCase() *Durafmt {
+	d.unitCase = accusativeUnitNames
+
+	return d
 }
 
 // LimitToUnit устанавливает формат вывода, вы не получите в итоговой строке единицу времени больше заданной.
@@ -109,7 +165,7 @@ func (d *Durafmt) Duration() time.Duration {
 func Parse(dinput time.Duration) *Durafmt {
 	input := dinput.String()
 
-	return &Durafmt{dinput, input, 0, ""}
+	return &Durafmt{dinput, input, 0, "", nominativeUnitNames}
 }
 
 // ParseShort создаёт новую структуру *Durafmt, краткой формы. Возвращает ошибку в случае неправильных
@@ -117,7 +173,7 @@ func Parse(dinput time.Duration) *Durafmt {
 func ParseShort(dinput time.Duration) *Durafmt {
 	input := dinput.String()
 
-	return &Durafmt{dinput, input, 1, ""}
+	return &Durafmt{dinput, input, 1, "", nominativeUnitNames}
 }
 
 // ParseString создаёт структуру *Durafmt из строки. Формат строки аналогичен используемому в durafmt.
@@ -132,7 +188,7 @@ func ParseString(input string) (*Durafmt, error) {
 		return nil, err
 	}
 
-	return &Durafmt{duration, input, 0, ""}, nil
+	return &Durafmt{duration, input, 0, "", nominativeUnitNames}, nil
 }
 
 // ParseStringShort создаёт структуру *Durafmt из строки, краткой формы. Формат строки аналогичен
@@ -148,7 +204,7 @@ func ParseStringShort(input string) (*Durafmt, error) {
 		return nil, err
 	}
 
-	return &Durafmt{duration, input, 1, ""}, nil
+	return &Durafmt{duration, input, 1, "", nominativeUnitNames}, nil
 }
 
 // String форматирует *Durafmt в человекочитаемый вид.
@@ -254,7 +310,7 @@ func (d *Durafmt) buildDuration(durationMap map[string]int64) string {
 	// Construct duration string.
 	for idx := range units {
 		uKey := units[idx]
-		u := unitNames[uKey]
+		u := d.unitCase[uKey]
 		v := durationMap[uKey]
 		strval := strconv.FormatInt(v, 10)
 
