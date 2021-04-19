@@ -84,6 +84,63 @@ func TestParse(t *testing.T) {
 	}
 }
 
+// TestParse тестирует форматирование time.Duration.
+func TestParse_SetAccusativeCase(t *testing.T) {
+	testTimes = []struct {
+		test     time.Duration
+		expected string
+	}{
+		{1 * time.Microsecond, "1 микросекунду"},
+		{1 * time.Millisecond, "1 миллисекунду"},
+		{1 * time.Second, "1 секунду"},
+		{1 * time.Hour, "1 час"},
+		{1 * time.Minute, "1 минуту"},
+		{2 * time.Microsecond, "2 микросекунды"},
+		{2 * time.Millisecond, "2 миллисекунды"},
+		{2 * time.Second, "2 секунды"},
+		{2 * time.Minute, "2 минуты"},
+		{1 * time.Hour, "1 час"},
+		{2 * time.Hour, "2 часа"},
+		{10 * time.Hour, "10 часов"},
+		{24 * time.Hour, "1 день"},
+		{48 * time.Hour, "2 дня"},
+		{120 * time.Hour, "5 дней"},
+		{168 * time.Hour, "1 неделю"},
+		{672 * time.Hour, "4 недели"},
+		{8759 * time.Hour, "52 недели 23 часа"},
+		{8760 * time.Hour, "1 год"},
+		{17519 * time.Hour, "1 год 52 недели 23 часа"},
+		{17520 * time.Hour, "2 года"},
+		{26279 * time.Hour, "2 года 52 недели 23 часа"},
+		{26280 * time.Hour, "3 года"},
+		{201479 * time.Hour, "22 года 52 недели 23 часа"},
+		{201480 * time.Hour, "23 года"},
+		{-1 * time.Second, "-1 секунду"},
+		{-10 * time.Second, "-10 секунд"},
+		{-100 * time.Second, "-1 минуту 40 секунд"},
+		{-1 * time.Millisecond, "-1 миллисекунду"},
+		{-10 * time.Millisecond, "-10 миллисекунд"},
+		{-100 * time.Millisecond, "-100 миллисекунд"},
+		{-1 * time.Microsecond, "-1 микросекунду"},
+		{-10 * time.Microsecond, "-10 микросекунд"},
+		{-100 * time.Microsecond, "-100 микросекунд"},
+		{-1000 * time.Microsecond, "-1 миллисекунду"},
+		{-1000000 * time.Microsecond, "-1 секунду"},
+		{-1001000 * time.Microsecond, "-1 секунду 1 миллисекунду"},
+		{-1010000 * time.Microsecond, "-1 секунду 10 миллисекунд"},
+		{-1001001 * time.Microsecond, "-1 секунду 1 миллисекунду 1 микросекунду"},
+		{-1001002 * time.Microsecond, "-1 секунду 1 миллисекунду 2 микросекунды"},
+	}
+
+	for _, table := range testTimes {
+		result := Parse(table.test).SetAccusativeCase().String()
+		if result != table.expected {
+			t.Errorf("Parse(%q).String() = %q. получено %q, ожидалось %q",
+				table.test, result, result, table.expected)
+		}
+	}
+}
+
 func TestParseWithLimitToUnit(t *testing.T) {
 	testTimesWithLimitUnit = []struct {
 		test      time.Duration
